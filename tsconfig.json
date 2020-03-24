@@ -30,6 +30,12 @@
       ],
       "@ngx-countries/countries/*": [
         "dist/ngx-countries/countries/*"
+      ],
+      "@ngx-countries/material": [
+        "dist/ngx-countries/material"
+      ],
+      "@ngx-countries/material/*": [
+        "dist/ngx-countries/material/*"
       ]
     }
   },
