@@ -1,1 +1,19 @@
 <mat-toolbar color="primary">Angular Material example</mat-toolbar>
+
+<div style="padding: 12px;">
+  <div>
+  <h3>ngModel</h3>
+  <ngx-countries-autocomplete [(ngModel)]="country"></ngx-countries-autocomplete>
+
+  <div>{{country}}</div>
+</div>
+
+  <div>
+    <h3>Reactive form</h3>
+    <form [formGroup]="form">
+      <ngx-countries-autocomplete appearance="outline" placeholder="Country" [formControl]="form.get('country')"></ngx-countries-autocomplete>
+
+      <span>{{form.get('country').value}}</span>
+    </form>
+  </div>
+</div>

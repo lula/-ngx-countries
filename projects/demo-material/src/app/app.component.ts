@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'demo-material';
+
+  form: FormGroup;
+
+  country: string = "it";
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      country: 'it'
+    });
+  }
 }

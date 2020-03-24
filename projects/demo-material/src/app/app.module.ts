@@ -5,7 +5,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatToolbarModule } from '@angular/material';
-
+import { NgxCountriesMaterialModule } from '@ngx-countries/material'
+import { NgxCountriesModule } from '@ngx-countries/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent
@@ -13,7 +15,11 @@ import { MatToolbarModule } from '@angular/material';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatToolbarModule
+    ReactiveFormsModule,
+    FormsModule,
+    MatToolbarModule,
+    NgxCountriesModule.forRoot(),
+    NgxCountriesMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
