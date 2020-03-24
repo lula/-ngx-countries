@@ -17,7 +17,21 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@ngx-countries/core": [
+        "dist/ngx-countries/core"
+      ],
+      "@ngx-countries/core/*": [
+        "dist/ngx-countries/core/*"
+      ],
+      "@ngx-countries/countries": [
+        "dist/ngx-countries/countries"
+      ],
+      "@ngx-countries/countries/*": [
+        "dist/ngx-countries/countries/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

@@ -1,0 +1,9 @@
+{
+  "name": "@ngx-countries/core",
+  "version": "1.0.0-beta1",
+  "peerDependencies": {
+    "@angular/common": "^8.0.0||^9.0.0",
+    "@angular/core": "^8.0.0||^9.0.0",
+    "i18n-iso-countries": "5.1.0"
+  }
+}
