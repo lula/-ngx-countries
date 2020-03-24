@@ -1,95 +1,189 @@
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
   Component,
   forwardRef,
+  HostBinding,
+  HostListener,
   Input,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-  OnInit,
   OnDestroy,
+  OnInit,
   Optional,
-  Self
+  Renderer2,
+  Self,
+  ViewChild
 } from '@angular/core';
-import {
-  MatFormFieldControl,
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent
-} from '@angular/material';
-import {
-  NG_VALUE_ACCESSOR,
-  ControlValueAccessor,
-  FormControl,
-  NgModel
-} from '@angular/forms';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material';
 import { NgxCountriesIsoService } from '@ngx-countries/core';
-import { map, startWith, concatAll, tap } from 'rxjs/operators';
-import { Observable, from, of, BehaviorSubject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+// tslint:disable: variable-name
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'ngx-countries-autocomplete',
   templateUrl: 'countries-autocomplete.component.html',
-  styles: [``],
+  styles: [
+    `
+      span {
+        opacity: 0;
+        transition: opacity 200ms;
+      }
+      :host.floating span {
+        opacity: 1;
+      }
+    `
+  ],
   providers: [
     {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CountriesAutocompleteComponent),
-      multi: true
+      provide: MatFormFieldControl,
+      useExisting: forwardRef(() => CountriesAutocompleteComponent)
     }
   ]
 })
 export class CountriesAutocompleteComponent
-  implements ControlValueAccessor, OnInit, OnDestroy {
-  @ViewChild('autocompleteInput', { static: false })
-  autocompleteInput: ElementRef;
-  @ViewChild('countriesAutocomplete', { static: false })
-  autocomplete: MatAutocomplete;
+  implements
+    MatFormFieldControl<string>,
+    ControlValueAccessor,
+    OnInit,
+    OnDestroy {
+  static nextId = 0;
 
-  @Input() appearance: string;
-  @Input() required: boolean;
-  @Input() placeholder: string;
-  @Input() formControl: FormControl;
-
+  @ViewChild('autocompleteInput', { static: true }) elementRef;
   selected: string;
-  countryCodes: string[];
-  countries$: Observable<string[]>;
 
-  modelValueChanges = new BehaviorSubject('');
-
-  displayItemFn?: (item: any) => string = item => {
-    return this.countriesService.getName(item);
+  @Input()
+  get value(): string | null {
+    return this.empty ? null : this.selected;
+  }
+  set value(val: string | null) {
+    this.selected = val;
+    this.writeValue(val);
+    this.stateChanges.next();
   }
 
-  constructor(private countriesService: NgxCountriesIsoService) {
-    this.countryCodes = Object.keys(countriesService.getNames());
+  stateChanges = new Subject<void>();
+
+  @HostBinding()
+  id = `ngx-countries-autocomplete-${CountriesAutocompleteComponent.nextId++}`;
+
+  @Input()
+  get placeholder() {
+    return this._placeholder;
+  }
+  set placeholder(plh) {
+    this._placeholder = plh;
+    this.stateChanges.next();
+  }
+  private _placeholder: string;
+
+  get empty() {
+    return !this.elementRef.nativeElement.value;
+  }
+
+  focused: boolean;
+
+  @HostBinding('class.floating')
+  get shouldLabelFloat(): boolean {
+    return this.focused || !this.empty;
+  }
+
+  @Input() 
+  get required() {
+    return this._required;
+  }
+  set required(req: boolean) {
+    this._required = coerceBooleanProperty(req);
+    this.stateChanges.next();
+  }
+  private _required = false;
+
+  @HostBinding('class.disabled')
+  get isDisabled() {
+    return this.disabled;
+  }
+  @Input() get disabled() {
+    return this.elementRef.nativeElement.disabled;
+  }
+  set disabled(dis: boolean) {
+    this.setDisabledState(coerceBooleanProperty(dis));
+    this.stateChanges.next();
+  }
+  private _disabled = false;
+
+  @Input()
+  get errorState() {
+    return this.ngControl.errors !== null && this.ngControl.touched;
+  }
+
+  @HostBinding('attr.aria-describedby') describedBy = '';
+  controlType = 'ngx-countries-autocomplete';
+  autofilled?: boolean;
+
+  countryCodes = [];
+  countries$: Observable<string[]>;
+  modelValueChanges = new Subject<string>();
+
+  displayItemFn: (item: any) => string = item => {
+    return this.countriesService.getName(item);
+  // tslint:disable-next-line: semicolon
+  };
+
+  constructor(
+    @Optional() @Self() public ngControl: NgControl,
+    private fm: FocusMonitor,
+    private renderer: Renderer2,
+    private countriesService: NgxCountriesIsoService
+  ) {
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
+    }
+    this.countryCodes = Object.keys(this.countriesService.getNames());
+    this.countries$ = this.modelValueChanges.pipe(
+      map(searchText =>
+        searchText
+          ? this.filterCountries(searchText)
+          : this.countryCodes.slice()
+      )
+    );
   }
 
   ngOnInit() {
-    if (this.formControl) {
-      this.countries$ = this.formControl.valueChanges.pipe(
-        startWith(this.formControl.value),
-        map(searchText => {
-          return searchText
-            ? this.filterCountries(searchText)
-            : this.countryCodes.slice();
-        })
-      );
-    } else {
-      this.countries$ = this.modelValueChanges.pipe(
-        map(searchText =>
-          searchText
-            ? this.filterCountries(searchText)
-            : this.countryCodes.slice()
-        )
-      );
-    }
+    this.fm.monitor(this.elementRef.nativeElement, true).subscribe(origin => {
+      this.focused = !!origin;
+      this.stateChanges.next();
+    });
   }
 
   ngOnDestroy() {
-    this.modelValueChanges.complete();
+    this.stateChanges.complete();
+    this.fm.stopMonitoring(this.elementRef.nativeElement);
   }
 
-  displayCountryFn() {
-    return this.displayItemFn;
+  @HostListener('keyup', ['$event'])
+  onKeyUp(event: KeyboardEvent) {
+    if (event.key.length === 1 || event.key === 'Backspace') {
+      this.modelValueChanges.next(this.elementRef.nativeElement.value);
+    }
+  }
+
+  @HostListener('focusout')
+  blur() {
+    this.focused = false;
+    this.onTouched();
+  }
+
+  setDescribedByIds(ids: string[]): void {
+    this.describedBy = ids.join(' ');
+  }
+
+  onContainerClick(event: MouseEvent): void {
+    if ((event.target as Element).tagName.toLowerCase() !== 'input' && !this.disabled) {
+      this.elementRef.nativeElement.focus();
+      this.focused = true;
+    }
   }
 
   filterCountries(searchText): string[] {
@@ -101,44 +195,27 @@ export class CountriesAutocompleteComponent
     );
   }
 
-  onKeyUp(event: KeyboardEvent) {
-    if (event.keyCode < 37 || event.keyCode > 40) {
-      this.modelValueChanges.next(this.autocompleteInput.nativeElement.value);
-    }
+  displayCountryFn() {
+    return this.displayItemFn;
   }
 
-  onBlur($event: MouseEvent) {
-    // console.log("blur", this.selected)
-    // if (!this.selected) {
-    //   this.writeValue('');
-    // }
-  }
-
-  autocompleteSelected(event: MatAutocompleteSelectedEvent) {
-    this.selected = event.option.value;
-    this.writeValue(event.option.value);
+  autocompleteSelected(event) {
+    this.value = event.option.value;
+    this.onChange(this.value);
   }
 
   writeValue(val: string): void {
-    // if (!val) {
-    //   return;
-    // }
-    
-    if (!this.formControl) {
-      this.modelValueChanges.next(val);
-    }
-
-    if (this.autocompleteInput) {
-      this.autocompleteInput.nativeElement.value = this.displayItemFn(val) || '';
-    }
-
-    this.onChange(val);
+    this.renderer.setProperty(
+      this.elementRef.nativeElement,
+      'value',
+      this.displayItemFn(val)
+    );
   }
 
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (_: any) => void): void {
     this.onChange = fn;
   }
 
@@ -147,6 +224,10 @@ export class CountriesAutocompleteComponent
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    throw new Error('Method not implemented.');
+    this.renderer.setProperty(
+      this.elementRef.nativeElement,
+      'disabled',
+      isDisabled
+    );
   }
 }
