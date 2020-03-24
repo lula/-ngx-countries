@@ -377,6 +377,7 @@
               "projects/demo-material/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/demo-material/src/styles.scss"
             ],
             "scripts": []
@@ -442,6 +443,7 @@
               "projects/demo-material/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/demo-material/src/styles.scss"
             ],
             "scripts": []
@@ -473,6 +475,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "@ngx-countries/core"
 }
