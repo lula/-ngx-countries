@@ -17,5 +17,7 @@ export class AppComponent {
     this.form = this.fb.group({
       country: 'it'
     });
+
+    this.form.get('country').disable();
   }
 }

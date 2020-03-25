@@ -3,14 +3,14 @@
 <div style="padding: 12px;">
 
   <div>
-  <h3>ngModel</h3>
-  <mat-form-field>
-    <mat-label>PAESE</mat-label>
-    <ngx-countries-autocomplete [(ngModel)]="country"></ngx-countries-autocomplete>
-  </mat-form-field>
+    <h3>ngModel</h3>
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <ngx-countries-autocomplete [disabled]="true" [(ngModel)]="country"></ngx-countries-autocomplete>
+    </mat-form-field>
 
-  <div>{{country}}</div>
-</div>
+    <div>{{country}}</div>
+  </div>
 
   <div>
     <h3>Reactive form</h3>

@@ -90,7 +90,7 @@ export class CountriesAutocompleteComponent
     return this.focused || !this.empty;
   }
 
-  @Input() 
+  @Input()
   get required() {
     return this._required;
   }
@@ -104,14 +104,17 @@ export class CountriesAutocompleteComponent
   get isDisabled() {
     return this.disabled;
   }
-  @Input() get disabled() {
+
+  @Input()
+  get disabled() {
     return this.elementRef.nativeElement.disabled;
   }
   set disabled(dis: boolean) {
-    this.setDisabledState(coerceBooleanProperty(dis));
-    this.stateChanges.next();
+    setTimeout(() => {
+      this.setDisabledState(coerceBooleanProperty(dis));
+      this.stateChanges.next();
+    }, 0);
   }
-  private _disabled = false;
 
   @Input()
   get errorState() {
@@ -128,7 +131,7 @@ export class CountriesAutocompleteComponent
 
   displayItemFn: (item: any) => string = item => {
     return this.countriesService.getName(item);
-  // tslint:disable-next-line: semicolon
+    // tslint:disable-next-line: semicolon
   };
 
   constructor(
@@ -180,7 +183,10 @@ export class CountriesAutocompleteComponent
   }
 
   onContainerClick(event: MouseEvent): void {
-    if ((event.target as Element).tagName.toLowerCase() !== 'input' && !this.disabled) {
+    if (
+      (event.target as Element).tagName.toLowerCase() !== 'input' &&
+      !this.disabled
+    ) {
       this.elementRef.nativeElement.focus();
       this.focused = true;
     }
