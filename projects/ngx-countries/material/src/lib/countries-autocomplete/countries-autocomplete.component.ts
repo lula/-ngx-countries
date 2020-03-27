@@ -130,8 +130,14 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   selected: string;
 
   @Input()
-  displayItemFn: (item: any) => string = item => {
-    return this.countriesService.getName(item);
+  displayOptionItemFn: (countryCode: string) => string = countryCode => {
+    return this.countriesService.getName(countryCode);
+    // tslint:disable-next-line: semicolon
+  };
+
+  @Input()
+  displayInputValueFn: (countryCode: string) => string = countryCode => {
+    return this.countriesService.getName(countryCode);
     // tslint:disable-next-line: semicolon
   };
 
@@ -191,14 +197,14 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   filterCountries(searchText): string[] {
     return this.countryCodes.filter(
       code =>
-        this.displayItemFn(code)
+        this.countriesService.getName(code)
           .toLowerCase()
           .indexOf(searchText.toLowerCase()) >= 0
     );
   }
 
   displayCountryFn() {
-    return this.displayItemFn;
+    return this.displayInputValueFn;
   }
 
   autocompleteSelected(event) {
@@ -207,7 +213,9 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   }
 
   writeValue(val: string): void {
-    this.matInput.value = this.displayItemFn(val);
+    setTimeout(() => {
+      this.matInput.value = this.displayInputValueFn(val);
+    }, 0);
   }
 
   onChange: any = () => {};

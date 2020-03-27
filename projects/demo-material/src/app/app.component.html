@@ -21,7 +21,8 @@
           formControlName="country" 
           required="true" 
           [optionTemplate]="optionTemplate" 
-          [displayItemFn]="displayFn">
+          [displayInputValueFn]="displayFn"
+          [displayOptionItemFn]="displayFn">
         </ngx-countries-autocomplete>
 
         <ng-template #optionTemplate let-code>

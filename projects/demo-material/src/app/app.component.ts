@@ -15,7 +15,7 @@ export class AppComponent {
   country = 'it';
 
   displayFn: (code: string) => string = code => {
-    return this.countriesService.getName(code) + ' - ' + code;
+    return this.countriesService.getName(code) + ' - ' + code.toUpperCase();
   }
 
   constructor(private fb: FormBuilder, private countriesService: NgxCountriesDataService) {
