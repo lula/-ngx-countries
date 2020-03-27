@@ -6,7 +6,9 @@
     <h3>ngModel</h3>
     <mat-form-field>
       <mat-label>Country</mat-label>
-      <ngx-countries-autocomplete [disabled]="false" [(ngModel)]="country"></ngx-countries-autocomplete>
+      <ngx-countries-autocomplete [disabled]="false" [(ngModel)]="country" [optionTemplate]="optionTemplate" 
+      [displayInputValueFn]="displayFn"
+      [displayOptionItemFn]="displayFn"></ngx-countries-autocomplete>
     </mat-form-field>
 
     <span>{{country}}</span>
@@ -24,12 +26,12 @@
           [displayInputValueFn]="displayFn"
           [displayOptionItemFn]="displayFn">
         </ngx-countries-autocomplete>
-
-        <ng-template #optionTemplate let-code>
-          {{displayFn(code)}}
-        </ng-template>
       </mat-form-field>
       <span>{{form.get('country').value}}</span>
     </form>
   </div>
+
+  <ng-template #optionTemplate let-code>
+    {{displayFn(code)}}
+  </ng-template>
 </div>

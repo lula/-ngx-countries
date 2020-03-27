@@ -8,7 +8,6 @@ import {
   HostListener,
   Input,
   OnDestroy,
-  OnInit,
   Optional,
   Renderer2,
   Self,
@@ -45,7 +44,7 @@ import { map } from 'rxjs/operators';
     }
   ]
 })
-export class CountriesAutocompleteComponent implements MatFormFieldControl<string>, ControlValueAccessor, OnInit, OnDestroy {
+export class CountriesAutocompleteComponent implements MatFormFieldControl<string>, ControlValueAccessor, OnDestroy {
   static nextId = 0;
   @ViewChild(MatInput, { static: true }) matInput: MatInput;
 
@@ -129,15 +128,25 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   modelValueChanges = new Subject<string>();
   selected: string;
 
+  /**
+   * Option item display function
+   */
   @Input()
   displayOptionItemFn: (countryCode: string) => string = countryCode => {
-    return this.countriesService.getName(countryCode);
+    if (countryCode) {
+      return this.countriesService.getName(countryCode);
+    }
     // tslint:disable-next-line: semicolon
   };
 
+  /**
+   * Input value display function
+   */
   @Input()
   displayInputValueFn: (countryCode: string) => string = countryCode => {
-    return this.countriesService.getName(countryCode);
+    if (countryCode) {
+      return this.countriesService.getName(countryCode);
+    }
     // tslint:disable-next-line: semicolon
   };
 
@@ -162,8 +171,6 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
       map(searchText => (searchText ? this.filterCountries(searchText) : this.countryCodes.slice()))
     );
   }
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this.stateChanges.complete();
@@ -192,15 +199,6 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
       this.elementRef.nativeElement.focus();
       this.focused = true;
     }
-  }
-
-  filterCountries(searchText): string[] {
-    return this.countryCodes.filter(
-      code =>
-        this.countriesService.getName(code)
-          .toLowerCase()
-          .indexOf(searchText.toLowerCase()) >= 0
-    );
   }
 
   displayCountryFn() {
@@ -233,5 +231,14 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
     this._disabled = isDisabled;
     this.renderer.setProperty(this.elementRef.nativeElement, 'disabled', isDisabled);
     this.matInput.disabled = isDisabled;
+  }
+
+  filterCountries(searchText: string): string[] {
+    return this.countryCodes.filter(
+      code =>
+        this.countriesService.getName(code)
+          .toLowerCase()
+          .indexOf(searchText.toLowerCase()) >= 0
+    );
   }
 }
