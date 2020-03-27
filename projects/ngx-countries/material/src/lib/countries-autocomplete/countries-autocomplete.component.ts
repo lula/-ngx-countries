@@ -215,7 +215,7 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
 
   writeValue(val: string): void {
     setTimeout(() => {
-      this.matInput.value = this.displayInputValueFn(val);
+      this.matInput.value = this.displayInputValueFn(val) || '';
     }, 0);
   }
 

@@ -12,7 +12,7 @@ export class AppComponent {
 
   form: FormGroup;
 
-  country = 'it';
+  country;
 
   displayFn: (code: string) => string = code => {
     if (code) {
@@ -22,7 +22,7 @@ export class AppComponent {
 
   constructor(private fb: FormBuilder, private countriesService: NgxCountriesDataService) {
     this.form = this.fb.group({
-      country: ['it', Validators.required]
+      country: ['', Validators.required]
     });
 
     // this.form.get('country').disable();
