@@ -1,12 +1,6 @@
-<input #autocompleteInput 
-  matInput 
-  [matAutocomplete]="countriesAutocomplete" 
-  [required]="required" />
+<input matInput [matAutocomplete]="countriesAutocomplete" [required]="required" />
 
-<mat-autocomplete 
-  #countriesAutocomplete="matAutocomplete" 
-  [displayWith]="displayCountryFn()" 
-  (optionSelected)="autocompleteSelected($event)">
+<mat-autocomplete #countriesAutocomplete="matAutocomplete" [displayWith]="displayCountryFn()" (optionSelected)="autocompleteSelected($event)">
   <mat-option *ngFor="let country of countries$ | async" [value]="country">
     {{ displayItemFn(country) }}
   </mat-option>

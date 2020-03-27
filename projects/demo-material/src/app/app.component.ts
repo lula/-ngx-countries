@@ -18,6 +18,6 @@ export class AppComponent {
       country: 'it'
     });
 
-    this.form.get('country').disable();
+    // this.form.get('country').disable();
   }
 }

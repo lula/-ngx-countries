@@ -11,10 +11,11 @@ import {
   Optional,
   Renderer2,
   Self,
-  ViewChild
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { MatFormFieldControl } from '@angular/material';
+import { MatFormFieldControl, MatAutocomplete, MatInput } from '@angular/material';
 import { NgxCountriesIsoService } from '@ngx-countries/core';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -43,16 +44,9 @@ import { map } from 'rxjs/operators';
     }
   ]
 })
-export class CountriesAutocompleteComponent
-  implements
-    MatFormFieldControl<string>,
-    ControlValueAccessor,
-    OnInit,
-    OnDestroy {
+export class CountriesAutocompleteComponent implements MatFormFieldControl<string>, ControlValueAccessor, OnInit, OnDestroy {
   static nextId = 0;
-
-  @ViewChild('autocompleteInput', { static: true }) elementRef;
-  selected: string;
+  @ViewChild(MatInput, { static: true }) matInput: MatInput;
 
   @Input()
   get value(): string | null {
@@ -80,7 +74,7 @@ export class CountriesAutocompleteComponent
   private _placeholder: string;
 
   get empty() {
-    return !this.elementRef.nativeElement.value;
+    return !this.matInput.value;
   }
 
   focused: boolean;
@@ -107,14 +101,14 @@ export class CountriesAutocompleteComponent
 
   @Input()
   get disabled() {
-    return this.elementRef.nativeElement.disabled;
+    return this._disabled;
   }
   set disabled(dis: boolean) {
-    setTimeout(() => {
-      this.setDisabledState(coerceBooleanProperty(dis));
-      this.stateChanges.next();
-    }, 0);
+    this._disabled = coerceBooleanProperty(dis);
+    this.setDisabledState(this._disabled);
+    this.stateChanges.next();
   }
+  private _disabled: boolean;
 
   @Input()
   get errorState() {
@@ -123,11 +117,13 @@ export class CountriesAutocompleteComponent
 
   @HostBinding('attr.aria-describedby') describedBy = '';
   controlType = 'ngx-countries-autocomplete';
+
   autofilled?: boolean;
 
   countryCodes = [];
   countries$: Observable<string[]>;
   modelValueChanges = new Subject<string>();
+  selected: string;
 
   displayItemFn: (item: any) => string = item => {
     return this.countriesService.getName(item);
@@ -136,6 +132,7 @@ export class CountriesAutocompleteComponent
 
   constructor(
     @Optional() @Self() public ngControl: NgControl,
+    private elementRef: ElementRef<HTMLElement>,
     private fm: FocusMonitor,
     private renderer: Renderer2,
     private countriesService: NgxCountriesIsoService
@@ -143,22 +140,19 @@ export class CountriesAutocompleteComponent
     if (this.ngControl != null) {
       this.ngControl.valueAccessor = this;
     }
-    this.countryCodes = Object.keys(this.countriesService.getNames());
-    this.countries$ = this.modelValueChanges.pipe(
-      map(searchText =>
-        searchText
-          ? this.filterCountries(searchText)
-          : this.countryCodes.slice()
-      )
-    );
-  }
 
-  ngOnInit() {
     this.fm.monitor(this.elementRef.nativeElement, true).subscribe(origin => {
       this.focused = !!origin;
       this.stateChanges.next();
     });
+
+    this.countryCodes = Object.keys(this.countriesService.getNames());
+    this.countries$ = this.modelValueChanges.pipe(
+      map(searchText => (searchText ? this.filterCountries(searchText) : this.countryCodes.slice()))
+    );
   }
+
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.stateChanges.complete();
@@ -168,7 +162,7 @@ export class CountriesAutocompleteComponent
   @HostListener('keyup', ['$event'])
   onKeyUp(event: KeyboardEvent) {
     if (event.key.length === 1 || event.key === 'Backspace') {
-      this.modelValueChanges.next(this.elementRef.nativeElement.value);
+      this.modelValueChanges.next(this.matInput.value);
     }
   }
 
@@ -183,10 +177,7 @@ export class CountriesAutocompleteComponent
   }
 
   onContainerClick(event: MouseEvent): void {
-    if (
-      (event.target as Element).tagName.toLowerCase() !== 'input' &&
-      !this.disabled
-    ) {
+    if ((event.target as Element).tagName.toLowerCase() !== 'input' && !this.disabled) {
       this.elementRef.nativeElement.focus();
       this.focused = true;
     }
@@ -211,11 +202,7 @@ export class CountriesAutocompleteComponent
   }
 
   writeValue(val: string): void {
-    this.renderer.setProperty(
-      this.elementRef.nativeElement,
-      'value',
-      this.displayItemFn(val)
-    );
+    this.matInput.value = this.displayItemFn(val);
   }
 
   onChange: any = () => {};
@@ -230,10 +217,8 @@ export class CountriesAutocompleteComponent
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    this.renderer.setProperty(
-      this.elementRef.nativeElement,
-      'disabled',
-      isDisabled
-    );
+    this._disabled = isDisabled;
+    this.renderer.setProperty(this.elementRef.nativeElement, 'disabled', isDisabled);
+    this.matInput.disabled = isDisabled;
   }
 }
