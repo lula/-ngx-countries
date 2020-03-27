@@ -2,6 +2,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
   Component,
+  ElementRef,
   forwardRef,
   HostBinding,
   HostListener,
@@ -11,11 +12,11 @@ import {
   Optional,
   Renderer2,
   Self,
+  TemplateRef,
   ViewChild,
-  ElementRef
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { MatFormFieldControl, MatAutocomplete, MatInput } from '@angular/material';
+import { MatFormFieldControl, MatInput } from '@angular/material';
 import { NgxCountriesIsoService } from '@ngx-countries/core';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -120,11 +121,15 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
 
   autofilled?: boolean;
 
+  @Input()
+  optionTemplate?: TemplateRef<any>;
+
   countryCodes = [];
   countries$: Observable<string[]>;
   modelValueChanges = new Subject<string>();
   selected: string;
 
+  @Input()
   displayItemFn: (item: any) => string = item => {
     return this.countriesService.getName(item);
     // tslint:disable-next-line: semicolon
@@ -188,7 +193,7 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
       code =>
         this.displayItemFn(code)
           .toLowerCase()
-          .indexOf(searchText.toLowerCase()) === 0
+          .indexOf(searchText.toLowerCase()) >= 0
     );
   }
 

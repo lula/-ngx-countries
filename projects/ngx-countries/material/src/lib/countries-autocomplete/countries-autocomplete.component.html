@@ -2,6 +2,11 @@
 
 <mat-autocomplete #countriesAutocomplete="matAutocomplete" [displayWith]="displayCountryFn()" (optionSelected)="autocompleteSelected($event)">
   <mat-option *ngFor="let country of countries$ | async" [value]="country">
-    {{ displayItemFn(country) }}
+    <ng-container *ngIf="optionTemplate else defaultOptionTemplate">
+      <ng-container *ngTemplateOutlet="optionTemplate; context: {$implicit:  country, name: displayItemFn(country)}"></ng-container>
+    </ng-container>
+    <ng-template #defaultOptionTemplate>
+      <div [innerHTML]="displayItemFn(country)"></div>
+    </ng-template>
   </mat-option>
 </mat-autocomplete>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { NgxCountriesDataService } from '@ngx-countries/countries';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,13 @@ export class AppComponent {
 
   form: FormGroup;
 
-  country: string = "it";
+  country = 'it';
 
-  constructor(private fb: FormBuilder) {
+  displayFn: (code: string) => string = code => {
+    return this.countriesService.getName(code) + ' - ' + code;
+  }
+
+  constructor(private fb: FormBuilder, private countriesService: NgxCountriesDataService) {
     this.form = this.fb.group({
       country: 'it'
     });
