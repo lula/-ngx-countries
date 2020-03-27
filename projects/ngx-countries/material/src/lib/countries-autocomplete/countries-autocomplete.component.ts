@@ -12,7 +12,7 @@ import {
   Renderer2,
   Self,
   TemplateRef,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { MatFormFieldControl, MatInput } from '@angular/material';
@@ -50,13 +50,14 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
 
   @Input()
   get value(): string | null {
-    return this.empty ? null : this.selected;
+    return this.empty ? null : this._value;
   }
   set value(val: string | null) {
-    this.selected = val;
+    this._value = val;
     this.writeValue(val);
     this.stateChanges.next();
   }
+  private _value: string;
 
   stateChanges = new Subject<void>();
 
@@ -110,9 +111,8 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   }
   private _disabled: boolean;
 
-  @Input()
-  get errorState() {
-    return this.ngControl.errors !== null && this.ngControl.touched;
+  get errorState(): boolean {
+    return this.ngControl.errors !== null && !!this.ngControl.touched;
   }
 
   @HostBinding('attr.aria-describedby') describedBy = '';
@@ -120,13 +120,15 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
 
   autofilled?: boolean;
 
-  @Input()
-  optionTemplate?: TemplateRef<any>;
-
   countryCodes = [];
   countries$: Observable<string[]>;
   modelValueChanges = new Subject<string>();
-  selected: string;
+
+  /**
+   * Template for select options
+   */
+  @Input()
+  optionTemplate?: TemplateRef<any>;
 
   /**
    * Option item display function
@@ -181,6 +183,7 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   onKeyUp(event: KeyboardEvent) {
     if (event.key.length === 1 || event.key === 'Backspace') {
       this.modelValueChanges.next(this.matInput.value);
+      this.onChange(null);
     }
   }
 
@@ -236,7 +239,8 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   filterCountries(searchText: string): string[] {
     return this.countryCodes.filter(
       code =>
-        this.countriesService.getName(code)
+        this.countriesService
+          .getName(code)
           .toLowerCase()
           .indexOf(searchText.toLowerCase()) >= 0
     );

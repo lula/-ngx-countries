@@ -8,7 +8,7 @@
       <mat-label>Country</mat-label>
       <ngx-countries-autocomplete [disabled]="false" [(ngModel)]="country" [optionTemplate]="optionTemplate" 
       [displayInputValueFn]="displayFn"
-      [displayOptionItemFn]="displayFn"></ngx-countries-autocomplete>
+      [displayOptionItemFn]="displayFn" [required]="true"></ngx-countries-autocomplete>
     </mat-form-field>
 
     <span>{{country}}</span>
@@ -21,7 +21,7 @@
         <mat-label>Country</mat-label>
         <ngx-countries-autocomplete 
           formControlName="country" 
-          required="true" 
+          [required]="true" 
           [optionTemplate]="optionTemplate" 
           [displayInputValueFn]="displayFn"
           [displayOptionItemFn]="displayFn">

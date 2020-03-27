@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxCountriesDataService } from '@ngx-countries/countries';
 
 @Component({
@@ -22,7 +22,7 @@ export class AppComponent {
 
   constructor(private fb: FormBuilder, private countriesService: NgxCountriesDataService) {
     this.form = this.fb.group({
-      country: 'it'
+      country: ['it', Validators.required]
     });
 
     // this.form.get('country').disable();
