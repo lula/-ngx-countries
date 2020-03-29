@@ -1,27 +1,92 @@
-# NgxCountriesLib
+# ngx-countries
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.14.
+This project is a simple Angular wrapper for [i18n-iso-countries](https://github.com/michaelwittig/node-i18n-iso-countries) and [countries](https://github.com/mledoze/countries) libraries.
 
-## Development server
+It gets locales and translations from `i81n-iso-countries` and additional data (currency, flag, etc) from `countries`.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+There are three main modules you can use:
 
-## Code scaffolding
+- `@ngx-countries/core`: main module, only uses `i81n-iso-countries`.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- `@ngx-countries/countries`: exports a service that gets country data from `countries` lib.
 
-## Build
+- `@ngx-countries/material`: exports some `@angular/material` components.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Installation
+
+`npm install --save @ngx-countries/core i18n-iso-countries'
+
+'countries' lib is already bundled in ngx-countries as it doesn't export countries.json.
+
+If you want to have countries data as well:
+
+`npm install --save @ngx-countries/countries'
+
+If you want to use material components:
+
+`npm install --save @ngx-countries/material'
+
+## Usage
+
+In your root module use `forRoot` method
+
+```typescript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgxCountriesModule } from '@ngx-countries/core';
+...
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    NgxCountriesModule.forRoot({
+      locales: ['en', 'it']
+    }),
+    ...
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+Supported locales: see [here](https://github.com/michaelwittig/node-i18n-iso-countries#supported-languages-iso-639-1).
+
+You can pass a default locale (default to `en`):
+
+```typescript
+NgxCountriesModule.forRoot({
+  defaultLocale: 'it',
+  locales: ['en', 'it', 'ja']
+})
+```
+
+If no locales are passed, only default locale is used.
+
+```typescript
+NgxCountriesModule.forRoot({
+  defaultLocale: 'it'
+})
+```
+
+If you pass no options in `forRoot` method only `en` is used as locale.
+
+```typescript
+NgxCountriesModule.forRoot()
+```
+
+In you child modules just import `NgxCountriesModule`.
+
+## Example application
+
+Run `ng build @ngx-countries/core` to build the library (build other modules as well if you want to use them)
+
+When done run `ng serve demo-core` (or `demo-countries-data` or `demo-material`) and go to http://localhost:4200 in your favourite browser once compiled.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- `ng test @ngx-countries/core`
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- `ng test @ngx-countries/countries`

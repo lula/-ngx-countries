@@ -4,7 +4,9 @@ import { NgxCountriesIsoService } from '@ngx-countries/core';
 import { COUNTRIES, Country } from './countries';
 
 @Injectable()
-export class NgxCountriesDataService extends NgxCountriesIsoService {
+export class NgxCountriesDataService {
+  constructor(private countriesIsoService: NgxCountriesIsoService) {}
+
   // countries country data
   getCountry(alpha2orAlpha3orNumeric: string | number): Country {
     const country = COUNTRIES.find(
@@ -12,7 +14,8 @@ export class NgxCountriesDataService extends NgxCountriesIsoService {
         c.cca2.toLowerCase() ===
         alpha2orAlpha3orNumeric.toString().toLowerCase()
     );
-    const langs = this.langs().map(lang2 =>
+
+    const langs = this.countriesIsoService.langs().map(lang2 =>
       this.i18nLocaleToCountriesLanguage(lang2)
     );
 

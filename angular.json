@@ -14,6 +14,11 @@
           "options": {
             "tsConfig": "projects/ngx-countries/core/tsconfig.lib.json",
             "project": "projects/ngx-countries/core/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ngx-countries/core/ng-package.json"
+            }
           }
         },
         "test": {
@@ -49,6 +54,11 @@
           "options": {
             "tsConfig": "projects/ngx-countries/countries/tsconfig.lib.json",
             "project": "projects/ngx-countries/countries/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ngx-countries/countries/ng-package.json"
+            }
           }
         },
         "test": {

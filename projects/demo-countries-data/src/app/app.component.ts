@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgxCountriesDataService } from '@ngx-countries/countries';
+import { NgxCountriesIsoService } from '@ngx-countries/core';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ export class AppComponent {
   countryCode: string;
   results: any = {};
 
-  constructor(private countries: NgxCountriesDataService) {}
+  constructor(private countries: NgxCountriesIsoService, private countriesData: NgxCountriesDataService) {}
 
   getName(code: string, lang: string) {
     return this.countries.getName(code, lang);
@@ -22,7 +23,7 @@ export class AppComponent {
       it: this.getName(this.countryCode, 'it'),
       ru: this.getName(this.countryCode, 'ru'),
       ja: this.getName(this.countryCode, 'ja'),
-      data: this.countries.getCountry(this.countryCode)
+      data: this.countriesData.getCountry(this.countryCode)
     };
   }
 

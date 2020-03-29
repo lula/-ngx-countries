@@ -18,16 +18,21 @@ describe('NgxCountriesService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return country for it country code', () => {
+  it('should return country for country code \'it\'', () => {
     const service: NgxCountriesDataService = TestBed.get(NgxCountriesDataService);
     const country = service.getCountry('it');
     expect(country).toBeTruthy();
   });
 
-  it('should return only localized translations except eng of country it country code', () => {
+  it('should return only localized translations except eng of country code \'it\'', () => {
     const service: NgxCountriesDataService = TestBed.get(NgxCountriesDataService);
     const country = service.getCountry('it');
-    console.log(country.translations)
     expect(Object.keys(country.translations)).toEqual(['fra', 'ita']);
+  });
+
+  it('should return currency EUR for country code \'it\'', () => {
+    const service: NgxCountriesDataService = TestBed.get(NgxCountriesDataService);
+    const country = service.getCountry('it');
+    expect(Object.keys(country.currencies)[0]).toEqual('EUR');
   });
 });

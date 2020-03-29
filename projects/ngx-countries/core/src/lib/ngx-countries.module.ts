@@ -10,35 +10,42 @@ export interface NgxCountriesOptions {
   defaultLocale?: string;
 }
 
+export function NgxCountriesLocalesFactory(locales: string[], defaultLocale: string) {
+  locales = locales || [defaultLocale];
+
+  if (!locales.includes(defaultLocale)) {
+    locales.push(defaultLocale);
+  }
+  
+  locales.forEach(locale => {
+    i18nIsoCountries.registerLocale(
+      require(`i18n-iso-countries/langs/${locale}.json`)
+    );
+  });
+
+  return new NgxCountriesIsoService(defaultLocale)
+}
+
 @NgModule({
   providers: [ NgxCountriesIsoService ]
 })
 export class NgxCountriesModule {
   static forRoot(options: NgxCountriesOptions = {}): ModuleWithProviders {
-    options.defaultLocale = options.defaultLocale || 'en';
-    options.locales = options.locales || [options.defaultLocale];
-
-    if (!options.locales.includes(options.defaultLocale)) {
-      options.locales.push(options.defaultLocale);
-    }
-
-    options.locales.forEach(locale => {
-      i18nIsoCountries.registerLocale(
-        require(`i18n-iso-countries/langs/${locale}.json`)
-      );
-    });
-
     return {
       ngModule: NgxCountriesModule,
       providers: [
-        NgxCountriesIsoService,
         {
           provide: NGX_COUNTRIES_DEFAULT_LOCALE,
-          useValue: options.defaultLocale
+          useValue: options.defaultLocale || 'en'
         },
         {
           provide: NGX_COUNTRIES_LOCALES,
-          useValue: options.locales
+          useValue: options.locales || (options.defaultLocale ? [options.defaultLocale] : ['en'])
+        },
+        {
+          provide: NgxCountriesIsoService,
+          useFactory: NgxCountriesLocalesFactory,
+          deps: [NGX_COUNTRIES_LOCALES, NGX_COUNTRIES_DEFAULT_LOCALE]
         }
       ]
     };
