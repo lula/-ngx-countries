@@ -52,7 +52,7 @@ import { NgxCountriesModule } from '@ngx-countries/core';
 export class AppModule { }
 ```
 
-Supported locales: see [here](https://github.com/michaelwittig/node-i18n-iso-countries#supported-languages-iso-639-1).
+See [here](https://github.com/michaelwittig/node-i18n-iso-countries#supported-languages-iso-639-1) the supported locales.
 
 You can pass a default locale (default to `en`):
 
@@ -83,7 +83,7 @@ In you child modules just import `NgxCountriesModule`.
 
 ### ngx-countries-autocomplete
 
-Anguarl material autocomplete that supports both template or reactive forms.
+Angular Material autocomplete that supports both template and reactive forms.
 
 Basic usage:
 
@@ -125,10 +125,12 @@ Template form:
 
 Available inputs:
 
-- `displayInputValueFn`: function used to display the input value. Default function display the country name.
-- `displayOptionItemFn`: function used to display the option values. Default function display the country name.
+- `displayInputValueFn`: function used to display the input value. Default function displays the country name.
+- `displayOptionItemFn`: function used to display the option values. Default function displays the country name.
 
 Both have the same interface: `(countryCode: string) => string`
+
+Usage:
 
 ```typescript
 export class AppComponent {
@@ -153,6 +155,8 @@ export class AppComponent {
 
 Interface: `(countryCode: string, searchText: string) => boolean`
 
+Usage:
+
 ```typescript
 export class AppComponent {
   constructor(private countriesService: NgxCountriesIsoService, ...) { ... }
@@ -175,6 +179,8 @@ export class AppComponent {
 
 - `optionTemplate`: templare ref to display options items. Template have the country code as implicit context parameter.
 
+Usage:
+
 ```html
 <ngx-countries-autocomplete formControlName="country" [optionTemplate]="optionTemplate"></ngx-countries-autocomplete>
 <ng-template #optionTemplate let-code>
@@ -182,9 +188,9 @@ export class AppComponent {
 </ng-template>
 ```
 
-## Example application
+## Example applications
 
-Run `ng build @ngx-countries/core` to build the library (build other modules as well if you want to use them)
+Run `ng build @ngx-countries/core` to build the library (build other modules as well if you want to run other demo applications `demo-countries-data` or `demo-material`)
 
 When done run `ng serve demo-core` (or `demo-countries-data` or `demo-material`) and go to http://localhost:4200 in your favourite browser once compiled.
 
