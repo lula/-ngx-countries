@@ -112,6 +112,9 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   private _disabled: boolean;
 
   get errorState(): boolean {
+    if (!this.countriesService.getName(this.value)) {
+      return true;
+    }
     return this.ngControl.errors !== null && !!this.ngControl.touched;
   }
 
@@ -134,7 +137,7 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
    * Option item display function
    */
   @Input()
-  displayOptionItemFn: (countryCode: string) => string = countryCode => {
+  displayOptionItemFn: (countryCode: string) => string = (countryCode) => {
     if (countryCode) {
       return this.countriesService.getName(countryCode);
     }
@@ -145,7 +148,7 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
    * Input value display function
    */
   @Input()
-  displayInputValueFn: (countryCode: string) => string = countryCode => {
+  displayInputValueFn: (countryCode: string) => string = (countryCode) => {
     if (countryCode) {
       return this.countriesService.getName(countryCode);
     }
@@ -183,7 +186,7 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   onKeyUp(event: KeyboardEvent) {
     if (event.key.length === 1 || event.key === 'Backspace') {
       this.modelValueChanges.next(this.matInput.value);
-      this.onChange(null);
+      this.onChange();
     }
   }
 
@@ -214,12 +217,14 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   }
 
   writeValue(val: string): void {
+    const value = this.displayInputValueFn(val) || '';
     setTimeout(() => {
-      this.matInput.value = this.displayInputValueFn(val) || '';
+      this.matInput.value = value;
     }, 0);
   }
 
   onChange: any = () => {};
+
   onTouched: any = () => {};
 
   registerOnChange(fn: (_: any) => void): void {

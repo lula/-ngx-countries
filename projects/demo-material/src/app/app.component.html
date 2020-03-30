@@ -1,18 +1,20 @@
 <mat-toolbar color="primary">Angular Material example</mat-toolbar>
 
 <div style="padding: 12px;">
-
-  <div>
+  <form>
     <h3>ngModel</h3>
     <mat-form-field>
       <mat-label>Country</mat-label>
-      <ngx-countries-autocomplete [disabled]="false" [(ngModel)]="country" [optionTemplate]="optionTemplate" 
+      <ngx-countries-autocomplete name="country" 
+      [disabled]="false" 
+      [required]="false"
+      [(ngModel)]="country" 
+      [optionTemplate]="optionTemplate" 
       [displayInputValueFn]="displayFn"
-      [displayOptionItemFn]="displayFn" [required]="true"></ngx-countries-autocomplete>
+      [displayOptionItemFn]="displayFn" ></ngx-countries-autocomplete>
     </mat-form-field>
-
     <span>{{country}}</span>
-  </div>
+  </form>
 
   <div>
     <h3>Reactive form</h3>
@@ -21,13 +23,14 @@
         <mat-label>Country</mat-label>
         <ngx-countries-autocomplete 
           formControlName="country" 
-          [required]="true" 
+          [required]="false" 
           [optionTemplate]="optionTemplate" 
           [displayInputValueFn]="displayFn"
           [displayOptionItemFn]="displayFn">
         </ngx-countries-autocomplete>
       </mat-form-field>
-      <span>{{form.get('country').value}}</span>
+      <mat-error *ngIf="form.get('country').invalid">Invalid</mat-error>
+      <span>{{form.value | json}}</span>
     </form>
   </div>
 

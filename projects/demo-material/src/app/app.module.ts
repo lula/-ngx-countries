@@ -8,7 +8,6 @@ import { MatToolbarModule, MatFormFieldModule } from '@angular/material';
 import { NgxCountriesMaterialModule } from '@ngx-countries/material';
 import { NgxCountriesModule } from '@ngx-countries/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { NgxCountriesDataService } from '@ngx-countries/countries';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +21,7 @@ import { NgxCountriesDataService } from '@ngx-countries/countries';
     NgxCountriesModule.forRoot(),
     NgxCountriesMaterialModule
   ],
-  providers: [NgxCountriesDataService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

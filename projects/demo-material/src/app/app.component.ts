@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxCountriesDataService } from '@ngx-countries/countries';
+import { NgxCountriesIsoService } from '@ngx-countries/core';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +9,8 @@ import { NgxCountriesDataService } from '@ngx-countries/countries';
 })
 export class AppComponent {
   title = 'demo-material';
-
   form: FormGroup;
-
-  country;
+  country: string;
 
   displayFn: (code: string) => string = code => {
     if (code) {
@@ -20,7 +18,7 @@ export class AppComponent {
     }
   }
 
-  constructor(private fb: FormBuilder, private countriesService: NgxCountriesDataService) {
+  constructor(private fb: FormBuilder, private countriesService: NgxCountriesIsoService) {
     this.form = this.fb.group({
       country: ['', Validators.required]
     });
