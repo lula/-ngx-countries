@@ -190,7 +190,7 @@ Usage:
 
 ## Example applications
 
-Run `ng build @ngx-countries/core` to build the library (build other modules as well if you want to run other demo applications `demo-countries-data` or `demo-material`)
+Run `ng build @ngx-countries/core` to build the library (build the other modules as well if you want to run other demo applications `demo-countries-data` or `demo-material`)
 
 When done run `ng serve demo-core` (or `demo-countries-data` or `demo-material`) and go to http://localhost:4200 in your favourite browser once compiled.
 
