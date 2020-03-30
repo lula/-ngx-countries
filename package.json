@@ -8,7 +8,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:all": "ng build --prod @ngx-countries/core && ng build --prod @ngx-countries/countries && ng build --prod @ngx-countries/material"
+    "build:core": "ng build --prod @ngx-countries/core && cp README.md LICENSE dist/ngx-countries/core",
+    "build:countries": "ng build --prod @ngx-countries/countries && cp README.md LICENSE dist/ngx-countries/countries",
+    "build:material": "ng build --prod @ngx-countries/material && cp README.md LICENSE dist/ngx-countries/material",
+    "build:all": "npm run build:core && npm run build:countries && npm run build:material"
   },
   "private": true,
   "dependencies": {
