@@ -85,7 +85,7 @@ In you child modules just import `NgxCountriesModule`.
 
 Anguarl material autocomplete that supports both template or reactive forms.
 
-#### Basic usage:
+Basic usage:
 
 ```typescript
 countryModel: string;
