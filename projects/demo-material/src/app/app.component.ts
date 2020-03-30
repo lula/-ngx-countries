@@ -12,7 +12,7 @@ export class AppComponent {
   form: FormGroup;
   country: string;
 
-  displayFn: (code: string) => string = code => {
+  myDisplayFn: (code: string) => string = code => {
     if (code) {
       return this.countriesService.getName(code) + ' - ' + code.toUpperCase();
     }
@@ -24,5 +24,12 @@ export class AppComponent {
     });
 
     // this.form.get('country').disable();
+  }
+
+  myShouldFilterCountryCode(countryCode: string, searchText: string) {
+    return this.countriesService
+      .getName(countryCode)
+      .toLowerCase()
+      .indexOf(searchText.toLowerCase()) >= 0;
   }
 }

@@ -155,6 +155,14 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
     // tslint:disable-next-line: semicolon
   };
 
+  @Input()
+  shouldFilterCountryCode: (countryCode: string, searchText: string) => boolean = (countryCode: string, searchText: string): boolean => {
+    return this.countriesService
+      .getName(countryCode)
+      .toLowerCase()
+      .indexOf(searchText.toLowerCase()) === 0;
+  }
+
   constructor(
     @Optional() @Self() public ngControl: NgControl,
     private elementRef: ElementRef<HTMLElement>,
@@ -242,12 +250,6 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   }
 
   filterCountries(searchText: string): string[] {
-    return this.countryCodes.filter(
-      code =>
-        this.countriesService
-          .getName(code)
-          .toLowerCase()
-          .indexOf(searchText.toLowerCase()) >= 0
-    );
+    return this.countryCodes.filter(code => this.shouldFilterCountryCode(code, searchText));
   }
 }

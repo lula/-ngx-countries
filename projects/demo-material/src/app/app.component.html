@@ -10,31 +10,31 @@
       [required]="false"
       [(ngModel)]="country" 
       [optionTemplate]="optionTemplate" 
-      [displayInputValueFn]="displayFn"
-      [displayOptionItemFn]="displayFn" ></ngx-countries-autocomplete>
+      [displayInputValueFn]="myDisplayFn"
+      [displayOptionItemFn]="myDisplayFn" 
+      [shouldFilterCountryCode]="myShouldFilterCountryCode"></ngx-countries-autocomplete>
     </mat-form-field>
     <span>{{country}}</span>
   </form>
 
-  <div>
+  <form [formGroup]="form">
     <h3>Reactive form</h3>
-    <form [formGroup]="form">
-      <mat-form-field>
-        <mat-label>Country</mat-label>
-        <ngx-countries-autocomplete 
-          formControlName="country" 
-          [required]="false" 
-          [optionTemplate]="optionTemplate" 
-          [displayInputValueFn]="displayFn"
-          [displayOptionItemFn]="displayFn">
-        </ngx-countries-autocomplete>
-      </mat-form-field>
-      <mat-error *ngIf="form.get('country').invalid">Invalid</mat-error>
-      <span>{{form.value | json}}</span>
-    </form>
-  </div>
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <ngx-countries-autocomplete 
+        formControlName="country" 
+        [required]="false" 
+        [optionTemplate]="optionTemplate" 
+        [displayInputValueFn]="myDisplayFn"
+        [displayOptionItemFn]="myDisplayFn"
+        [shouldFilterCountryCode]="myShouldFilterCountryCode">
+      </ngx-countries-autocomplete>
+    </mat-form-field>
+    <mat-error *ngIf="form.get('country').invalid">Invalid</mat-error>
+    <span>{{form.value | json}}</span>
+  </form>
 
   <ng-template #optionTemplate let-code>
-    {{displayFn(code)}}
+    {{myDisplayFn(code)}}
   </ng-template>
 </div>
