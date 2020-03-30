@@ -14,17 +14,17 @@ There are three main modules you can use:
 
 ## Installation
 
-`npm install --save @ngx-countries/core i18n-iso-countries'
+`npm install --save @ngx-countries/core i18n-iso-countries`
 
-'countries' lib is already bundled in ngx-countries as it doesn't export countries.json.
+`countries` lib is already bundled in ngx-countries as it doesn't export countries.json.
 
 If you want to have countries data as well:
 
-`npm install --save @ngx-countries/countries'
+`npm install --save @ngx-countries/countries`
 
 If you want to use material components:
 
-`npm install --save @ngx-countries/material'
+`npm install --save @ngx-countries/material`
 
 ## Usage
 
