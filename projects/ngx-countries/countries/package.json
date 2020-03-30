@@ -1,6 +1,6 @@
 {
   "name": "@ngx-countries/countries",
-  "version": "1.0.0-beat1",
+  "version": "1.0.0-beta1",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14",

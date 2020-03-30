@@ -338,6 +338,11 @@
           "options": {
             "tsConfig": "projects/ngx-countries/material/tsconfig.lib.json",
             "project": "projects/ngx-countries/material/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ngx-countries/material/ng-package.json"
+            }
           }
         },
         "test": {

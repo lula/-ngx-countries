@@ -1,10 +1,10 @@
 {
   "name": "@ngx-countries/material",
-  "version": "0.0.1",
+  "version": "1.0.0-beta1",
   "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "@angular/material": "^8.0.0",
+    "@angular/common": "^8.0.0||^9.0.0",
+    "@angular/core": "^8.0.0||^9.0.0",
+    "@angular/material": "^8.0.0||^9.0.0",
     "@ngx-countries/core": "^1.0.0"
   }
 }
