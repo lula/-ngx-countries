@@ -8,11 +8,10 @@ import { NgxCountriesIsoService } from '@ngx-countries/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'demo-material';
   form: FormGroup;
   country: string;
 
-  myDisplayFn: (code: string) => string = code => {
+  myDisplayFn(code: string): string {
     if (code) {
       return this.countriesService.getName(code) + ' - ' + code.toUpperCase();
     }
@@ -26,7 +25,7 @@ export class AppComponent {
     // this.form.get('country').disable();
   }
 
-  myShouldFilterCountryCode(countryCode: string, searchText: string) {
+  myShouldFilterCountryCode(countryCode: string, searchText: string): boolean {
     return this.countriesService
       .getName(countryCode)
       .toLowerCase()

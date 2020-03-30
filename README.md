@@ -79,6 +79,109 @@ NgxCountriesModule.forRoot()
 
 In you child modules just import `NgxCountriesModule`.
 
+## Material components
+
+### ngx-countries-autocomplete
+
+Anguarl material autocomplete that supports both template or reactive forms.
+
+#### Basic usage:
+
+```typescript
+countryModel: string;
+
+constructor(private fb: FormBuilder, private countriesService: NgxCountriesIsoService) {
+  this.form = this.fb.group({
+    country: ''
+  });
+}
+```
+
+Reactive form:
+
+```html
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-label>Country</mat-label>
+    <ngx-countries-autocomplete formControlName="country"></ngx-countries-autocomplete>
+  </mat-form-field>
+  <mat-error *ngIf="form.get('country').invalid">Invalid</mat-error>
+  <span>{{form.value | json}}</span>
+</form>
+```
+
+Template form:
+
+```html
+ <form>
+  <h3>ngModel</h3>
+  <mat-form-field>
+    <mat-label>Country</mat-label>
+    <ngx-countries-autocomplete name="country" [(ngModel)]="country"></ngx-countries-autocomplete>
+  </mat-form-field>
+  <span>{{country}}</span>
+</form>
+```
+
+Available inputs:
+
+- `displayInputValueFn`: function used to display the input value. Default function display the country name.
+- `displayOptionItemFn`: function used to display the option values. Default function display the country name.
+
+Both have the same interface: `(countryCode: string) => string`
+
+```typescript
+export class AppComponent {
+  myDisplayFn(countryCode: string): string {
+    if (countryCode) {
+      return this.countriesService.getName(countryCode) + ' - ' + countryCode.toUpperCase();
+    }
+  }
+
+  constructor(private countriesService: NgxCountriesIsoService, ...) { ... }
+}
+```
+
+```html
+<mat-form-field>
+  <mat-label>Country</mat-label>
+  <ngx-countries-autocomplete name="country" [(ngModel)]="country" [displayInputValueFn]="myDisplayFn"></ngx-countries-autocomplete>
+</mat-form-field>
+```
+
+- shouldFilterCountryCode: used to filter option items (country codes). Default function returns the country name that starts with the input value.
+
+Interface: `(countryCode: string, searchText: string) => boolean`
+
+```typescript
+export class AppComponent {
+  constructor(private countriesService: NgxCountriesIsoService, ...) { ... }
+
+  myShouldFilterCountryCode(countryCode: string, searchText: string): boolean {
+    return this.countriesService
+      .getName(countryCode)
+      .toLowerCase()
+      .indexOf(searchText.toLowerCase()) >= 0;
+  }
+}
+```
+
+```html
+<mat-form-field>
+  <mat-label>Country</mat-label>
+  <ngx-countries-autocomplete name="country" [(ngModel)]="country" [shouldFilterCountryCode]="myShouldFilterCountryCode"></ngx-countries-autocomplete>
+</mat-form-field>
+```
+
+- `optionTemplate`: templare ref to display options items. Template have the country code as implicit context parameter.
+
+```html
+<ngx-countries-autocomplete formControlName="country" [optionTemplate]="optionTemplate"></ngx-countries-autocomplete>
+<ng-template #optionTemplate let-code>
+  {{myDisplayFn(code)}}
+</ng-template>
+```
+
 ## Example application
 
 Run `ng build @ngx-countries/core` to build the library (build other modules as well if you want to use them)
