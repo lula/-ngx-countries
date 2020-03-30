@@ -1,4 +1,4 @@
-# ngx-countries
+# @ngx-countries
 
 This project is a simple Angular wrapper for [i18n-iso-countries](https://github.com/michaelwittig/node-i18n-iso-countries) and [countries](https://github.com/mledoze/countries) libraries.
 
