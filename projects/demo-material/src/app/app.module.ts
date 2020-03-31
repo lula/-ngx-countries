@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatToolbarModule, MatFormFieldModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxCountriesMaterialModule } from '@ngx-countries/material';
 import { NgxCountriesModule } from '@ngx-countries/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';

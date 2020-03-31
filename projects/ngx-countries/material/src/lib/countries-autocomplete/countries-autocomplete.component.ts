@@ -15,7 +15,8 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { MatFormFieldControl, MatInput } from '@angular/material';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { NgxCountriesIsoService } from '@ngx-countries/core';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
