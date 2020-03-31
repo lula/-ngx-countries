@@ -113,9 +113,6 @@ export class CountriesAutocompleteComponent implements MatFormFieldControl<strin
   private _disabled: boolean;
 
   get errorState(): boolean {
-    if (!this.countriesService.getName(this.value)) {
-      return true;
-    }
     return this.ngControl.errors !== null && !!this.ngControl.touched;
   }
 

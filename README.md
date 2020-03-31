@@ -24,9 +24,9 @@ If you want to have countries data as well:
 
 If you want to use material components:
 
-- Angular Material 8: `npm install --save @ngx-countries/material@8.0.1`
+- Angular Material 8: `npm install --save @ngx-countries/material@^8.0.0`
 
-- Angular Material 9: `npm install --save @ngx-countries/material@9.0.1`
+- Angular Material 9: `npm install --save @ngx-countries/material@^9.0.0`
 
 ## Usage
 
