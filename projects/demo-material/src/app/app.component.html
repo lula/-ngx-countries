@@ -1,40 +1,6 @@
-<mat-toolbar color="primary">Angular Material example</mat-toolbar>
-
-<div style="padding: 12px;">
-  <form>
-    <h3>ngModel</h3>
-    <mat-form-field>
-      <mat-label>Country</mat-label>
-      <ngx-countries-autocomplete name="country" 
-      [disabled]="false" 
-      [required]="false"
-      [(ngModel)]="country" 
-      [optionTemplate]="optionTemplate" 
-      [displayInputValueFn]="myDisplayFn"
-      [displayOptionItemFn]="myDisplayFn" 
-      [shouldFilterCountryCode]="myShouldFilterCountryCode"></ngx-countries-autocomplete>
-    </mat-form-field>
-    <span>{{country}}</span>
-  </form>
-
-  <form [formGroup]="form">
-    <h3>Reactive form</h3>
-    <mat-form-field>
-      <mat-label>Country</mat-label>
-      <ngx-countries-autocomplete 
-        formControlName="country" 
-        [required]="false"
-        [optionTemplate]="optionTemplate" 
-        [displayInputValueFn]="myDisplayFn"
-        [displayOptionItemFn]="myDisplayFn"
-        [shouldFilterCountryCode]="myShouldFilterCountryCode">
-      </ngx-countries-autocomplete>
-    </mat-form-field>
-    <mat-error *ngIf="form.get('country').invalid">Invalid</mat-error>
-    <span>{{form.value | json}}</span>
-  </form>
-
-  <ng-template #optionTemplate let-code>
-    {{myDisplayFn(code)}}
-  </ng-template>
-</div>
+<mat-toolbar color="primary">
+  Angular Material example
+  <button mat-button routerLink="/">Root</button>
+  <button mat-button routerLink="/child">Child</button>
+</mat-toolbar>
+<router-outlet></router-outlet>

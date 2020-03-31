@@ -1,6 +1,6 @@
 {
   "name": "@ngx-countries/material",
-  "version": "1.0.0",
+  "version": "9.0.1",
   "private": false,
   "homepage": "https://github.com/lula/-ngx-countries",
   "bugs": {
@@ -13,7 +13,7 @@
   "peerDependencies": {
     "@angular/common": "^8.0.0||^9.0.0",
     "@angular/core": "^8.0.0||^9.0.0",
-    "@angular/material": "^8.0.0||^9.0.0",
+    "@angular/material": "^9.0.0",
     "@ngx-countries/core": "^1.0.0"
   }
 }
