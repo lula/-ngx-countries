@@ -18,7 +18,8 @@
           "configurations": {
             "production": {
               "project": "projects/ngx-countries/core/ng-package.json"
-            }
+            ,              "tsConfig": "projects/ngx-countries/core/tsconfig.lib.prod.json"
+}
           }
         },
         "test": {
@@ -58,7 +59,8 @@
           "configurations": {
             "production": {
               "project": "projects/ngx-countries/countries/ng-package.json"
-            }
+            ,              "tsConfig": "projects/ngx-countries/countries/tsconfig.lib.prod.json"
+}
           }
         },
         "test": {
@@ -102,7 +104,7 @@
             "main": "projects/demo-core/src/main.ts",
             "polyfills": "projects/demo-core/src/polyfills.ts",
             "tsConfig": "projects/demo-core/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/demo-core/src/favicon.ico",
               "projects/demo-core/src/assets"
@@ -125,7 +127,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -224,7 +225,7 @@
             "main": "projects/demo-countries-data/src/main.ts",
             "polyfills": "projects/demo-countries-data/src/polyfills.ts",
             "tsConfig": "projects/demo-countries-data/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/demo-countries-data/src/favicon.ico",
               "projects/demo-countries-data/src/assets"
@@ -247,7 +248,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -342,7 +342,8 @@
           "configurations": {
             "production": {
               "project": "projects/ngx-countries/material/ng-package.json"
-            }
+            ,              "tsConfig": "projects/ngx-countries/material/tsconfig.lib.prod.json"
+}
           }
         },
         "test": {
@@ -386,7 +387,7 @@
             "main": "projects/demo-material/src/main.ts",
             "polyfills": "projects/demo-material/src/polyfills.ts",
             "tsConfig": "projects/demo-material/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/demo-material/src/favicon.ico",
               "projects/demo-material/src/assets"
@@ -410,7 +411,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,

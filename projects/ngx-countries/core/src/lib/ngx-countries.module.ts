@@ -30,7 +30,7 @@ export function NgxCountriesLocalesFactory(locales: string[], defaultLocale: str
   providers: [ NgxCountriesIsoService ]
 })
 export class NgxCountriesModule {
-  static forRoot(options: NgxCountriesOptions = {}): ModuleWithProviders {
+  static forRoot(options: NgxCountriesOptions = {}): ModuleWithProviders<NgxCountriesModule> {
     return {
       ngModule: NgxCountriesModule,
       providers: [
