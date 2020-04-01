@@ -13,29 +13,29 @@ describe('NgxCountriesService', () => {
   }));
 
   it('should be created', () => {
-    const service: NgxCountriesIsoService = TestBed.get(NgxCountriesIsoService);
+    const service: NgxCountriesIsoService = TestBed.inject(NgxCountriesIsoService);
     expect(service).toBeTruthy();
   });
 
   it('should be localized for it, fr and en', () => {
-    const service: NgxCountriesIsoService = TestBed.get(NgxCountriesIsoService);
+    const service: NgxCountriesIsoService = TestBed.inject(NgxCountriesIsoService);
     expect(service.langs()).toEqual(['en', 'it', 'fr']);
   });
 
   it('should return \'Italy\' for it country code for language en', () => {
-    const service: NgxCountriesIsoService = TestBed.get(NgxCountriesIsoService);
+    const service: NgxCountriesIsoService = TestBed.inject(NgxCountriesIsoService);
     const name = service.getName('it', 'en');
     expect(name).toBe('Italy');
   });
 
   it('should return \'Italia\' for country code \'it\' for language it', () => {
-    const service: NgxCountriesIsoService = TestBed.get(NgxCountriesIsoService);
+    const service: NgxCountriesIsoService = TestBed.inject(NgxCountriesIsoService);
     const name = service.getName('it', 'it');
     expect(name).toBe('Italia');
   });
 
   it('should return undefined for country code \'it\' for language sp', () => {
-    const service: NgxCountriesIsoService = TestBed.get(NgxCountriesIsoService);
+    const service: NgxCountriesIsoService = TestBed.inject(NgxCountriesIsoService);
     const name = service.getName('it', 'sp');
     expect(name).toBeUndefined();
   });

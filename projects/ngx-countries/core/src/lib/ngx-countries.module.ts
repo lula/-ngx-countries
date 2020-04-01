@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { NgxCountriesIsoService } from './ngx-countries-iso.service';
 import { NGX_COUNTRIES_DEFAULT_LOCALE, NGX_COUNTRIES_LOCALES } from './constants';
 import * as i18nIsoCountries from 'i18n-iso-countries';
+import { CountryNamePipe } from './country-name.pipe';
 
 declare function require(module);
 
@@ -16,22 +17,24 @@ export function NgxCountriesLocalesFactory(locales: string[], defaultLocale: str
   if (!locales.includes(defaultLocale)) {
     locales.push(defaultLocale);
   }
-  
+
   locales.forEach(locale => {
-    i18nIsoCountries.registerLocale(
-      require(`i18n-iso-countries/langs/${locale}.json`)
-    );
+    i18nIsoCountries.registerLocale(require(`i18n-iso-countries/langs/${locale}.json`));
   });
 
-  return new NgxCountriesIsoService(defaultLocale)
+  return new NgxCountriesIsoService(defaultLocale);
 }
 
 @NgModule({
-  providers: [ {
-    provide: NgxCountriesIsoService,
-    useFactory: NgxCountriesLocalesFactory,
-    deps: [NGX_COUNTRIES_LOCALES, NGX_COUNTRIES_DEFAULT_LOCALE]
-  }]
+  providers: [
+    {
+      provide: NgxCountriesIsoService,
+      useFactory: NgxCountriesLocalesFactory,
+      deps: [NGX_COUNTRIES_LOCALES, NGX_COUNTRIES_DEFAULT_LOCALE]
+    }
+  ],
+  declarations: [CountryNamePipe],
+  exports: [CountryNamePipe]
 })
 export class NgxCountriesModule {
   static forRoot(options: NgxCountriesOptions = {}): ModuleWithProviders<NgxCountriesModule> {
